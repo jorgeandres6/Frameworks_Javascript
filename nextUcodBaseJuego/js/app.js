@@ -27,7 +27,7 @@ function color2 (elemento){ // Color del titulo 2
 function inicio (){
   for (var i=0; i<7; i++){
     var sel = randomico ();
-    $(".col-1").prepend('<img src="image/'+sel+'.png" alt="caramelo '+sel+'" class="elemento" id="1'+i+'">');
+    $(".col-1").prepend('<img src="image/'+sel+'.png" class="elemento" id="1'+i+'">');
     var sel = randomico ();
     $(".col-2").prepend('<img src="image/'+sel+'.png" alt="caramelo '+sel+'" class="elemento" id="2'+i+'">');
     var sel = randomico ();
@@ -94,25 +94,25 @@ function area(j){
             img2=$(this).attr("src");
             $(this).attr("src",img1);
             $('#'+identificador).attr("src",img2);
+            gravity();
           }
 
       });
 }
 
-/*function area(num){
-    $('#'+num).droppable({
-      accept : function (d){
-        var num2=parseInt(num)+1;
-        console.log(num);
-        if (d.attr("id")==num2){
-          return true;
-        }
-      }
-      /*over : function(event,ui){
-          console.log(identificador);
-      }*/
-    /*});
-}*/
 
-//$(".col-1").prepend('<img src="image/1.png" alt="">');
-//$("#hola").prepend('<img src="image/2.png" alt="">');
+function eliminar(){
+
+}
+
+function gravity(){
+  var pos = $('#15').position();
+  $('#15').animate(
+    {
+      top: "+=100"
+    },1000, function (){
+      $('#14').hide();
+    }
+  );
+  //$('#16').attr("id",15);
+}
