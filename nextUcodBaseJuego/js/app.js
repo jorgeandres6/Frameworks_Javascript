@@ -94,7 +94,7 @@ function area(j){
             img2=$(this).attr("src");
             $(this).attr("src",img1);
             $('#'+identificador).attr("src",img2);
-            gravity();
+            eliminar();
           }
 
       });
@@ -102,15 +102,57 @@ function area(j){
 
 
 function eliminar(){
+  var ident = 20;
+  var cont = 0;
+  var auxid = 0;
+  var auxid2 = 0;
+  var auxid3 = 0;
+  for (var i=ident+1;i<ident+8;i++){
+    if ($('#'+ident).attr("src")==$('#'+i).attr("src")){
+      cont++;
+    }else {
+      if (cont>1){
+        for (var j=0;j<cont+1;j++){
+          auxid = ident+j;
+          auxid2 = auxid+1;
+          $('#'+auxid).hide("fast")
+        }
+        for (var k=0;k<cont+1;k++){
+          auxid3 = ident+k;
+          $('#'+auxid3).attr("src",$('#'+auxid2).attr("src"));
+          $('#'+auxid3).show("fast");
+          console.log(auxid3);
+        }
+      }
 
+      break;
+    }
+  }
+}
+
+function rap(){
+  for (var k=0;k<cont+1;k++){
+    auxid3 = ident+k;
+    $('#'+auxid3).show("fast");
+    console.log(auxid3);
+    //$('#'+auxid).attr("src",$('#'+auxid2).attr("src"));
+  }
 }
 
 function gravity(){
+  $('#14').hide("slow",function(){
+    var imagen = $('#15').attr("src");
+    $('#14').attr("src",imagen);
+    $('#14').show();
+  });
+}
+
+function gravity2(){
   var pos = $('#15').position();
   $('#15').animate(
     {
       top: "+=100"
-    },1000, function (){
+    },500, function (){
       $('#14').hide();
     }
   );
