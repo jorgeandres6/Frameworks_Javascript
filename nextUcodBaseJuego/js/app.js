@@ -6,6 +6,10 @@ $(function(){
   color1("h1");//Funcion para el color del titulo
   inicio();
   selec();
+  barrido();
+  $('.elemento').click(function(){
+    console.log(this.id);
+  });
 })
 
 function color1 (elemento){ // Color del titulo 1
@@ -25,7 +29,7 @@ function color2 (elemento){ // Color del titulo 2
 }
 
 function inicio (){
-  for (var i=0; i<7; i++){
+  for (var i=10; i<24; i++){
     var sel = randomico ();
     $(".col-1").prepend('<img src="image/'+sel+'.png" class="elemento" id="1'+i+'">');
     var sel = randomico ();
@@ -40,6 +44,12 @@ function inicio (){
     $(".col-6").prepend('<img src="image/'+sel+'.png" alt="caramelo '+sel+'" class="elemento" id="6'+i+'">');
     var sel = randomico ();
     $(".col-7").prepend('<img src="image/'+sel+'.png" alt="caramelo '+sel+'" class="elemento" id="7'+i+'">');
+  }
+  for (var j=1; j<8; j++){
+    for (var i = 17; i < 24; i++) {
+      var m=(j*100)+i;
+      $("#"+m).hide();
+    }
   }
   condiciones();
 }
@@ -76,7 +86,7 @@ function condiciones (){
 }
 
 function selec(){
-  for (var n=0;n<80;n=n+10){
+  for (var n=0;n<800;n=n+100){
     for (var m=10;m<27;m++){
       area(m+n);
     }
@@ -86,7 +96,7 @@ function selec(){
 function area(j){
       $('#'+j).droppable({
           accept : function(d){
-            if (d.attr("id")==j-1 || d.attr("id")==j+1 ||d.attr("id")==j-10 || d.attr("id")==j+10){
+            if (d.attr("id")==j-1 || d.attr("id")==j+1 ||d.attr("id")==j-100 || d.attr("id")==j+100){
               return true;
             }
           },
@@ -94,40 +104,57 @@ function area(j){
             img2=$(this).attr("src");
             $(this).attr("src",img1);
             $('#'+identificador).attr("src",img2);
-            eliminar();
+            barrido();
           }
-
       });
 }
 
 
-function eliminar(){
-  var ident = 20;
+function eliminar(n){
+  var ident = 110+n*100;
+  var ident2 = 0;
   var cont = 0;
   var auxid = 0;
   var auxid2 = 0;
   var auxid3 = 0;
-  for (var i=ident+1;i<ident+8;i++){
-    if ($('#'+ident).attr("src")==$('#'+i).attr("src")){
-      cont++;
-    }else {
-      if (cont>1){
-        for (var j=0;j<cont+1;j++){
-          auxid = ident+j;
-          auxid2 = auxid+1;
-          $('#'+auxid).hide("fast")
+  var auxid4 = 0;
+  var auxid5 = 0;
+  for (var c=0;c<4;c++){ //Recorrido 4 primeros elementos columna
+    cont = 0;
+    ident2 = ident+c;
+    for (var i=ident2+1;i<ident2+8;i++){ //Recorrido elementos columna
+      if ($('#'+ident2).attr("src")==$('#'+i).attr("src")){ //comparacion de elementos iguales en columna
+        cont++;
+      }else {
+        if (cont>1){
+          for (var j=0;j<cont+1;j++){
+            auxid = ident+j;
+            auxid2 = ident2+j;
+            auxid5 = auxid+7;
+            $('#'+auxid2).hide("fast");
+            $('#'+auxid2).remove();
+            $('#'+auxid5).show();
+          }
+          for (var k=0;k<14;k++){
+            auxid3 = ident+k;
+            auxid4 = auxid3+cont+1;
+            $('#'+auxid4).attr("id",auxid3);
+            //console.log(auxid4 +" -> "+ auxid3);
+          }
+          for (var n=0; n<cont+1; n++){
+            var col = (ident-10)/100;
+            var sel1 = randomico ();
+            var ide = ident+13-cont+n;
+            $('.col-'+col).prepend('<img src="image/'+sel1+'.png" class="elemento" id="'+ide+'">');
+            $('#'+ide).hide();
+            console.log(ide);
+          }
         }
-        for (var k=0;k<cont+1;k++){
-          auxid3 = ident+k;
-          $('#'+auxid3).attr("src",$('#'+auxid2).attr("src"));
-          $('#'+auxid3).show("fast");
-          console.log(auxid3);
-        }
+        selec();
+        break;
       }
-
-      break;
-    }
-  }
+    }//Fin recorrido elementos columna
+  }//Fin recorrido 4 primeros elementos columna
 }
 
 function rap(){
@@ -157,4 +184,10 @@ function gravity2(){
     }
   );
   //$('#16').attr("id",15);
+}
+
+function barrido(){ //Funcion comparacion de elementos iguales en malla
+  for (var n=0;n<8;n++){//Barido horizontal
+    eliminar(n);
+  }
 }
