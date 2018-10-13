@@ -3,9 +3,10 @@ $(function(){
   var img1;
   var img2;
   var identificador;
+  var aele = [];
   color1("h1");//Funcion para el color del titulo
   inicio();
-  selec();
+  selec(aele);
   //barrido();
   $('.elemento').click(function(){
     console.log(this.id);
@@ -85,15 +86,15 @@ function condiciones (){
   });
 }
 
-function selec(){ //Barrido de los elementos para hacerlos droppable
+function selec(aele){ //Barrido de los elementos para hacerlos droppable
   for (var n=0;n<800;n=n+100){
     for (var m=10;m<25;m++){
-      area(m+n);
+      area(m+n,aele);
     }
   }
 }
 
-function area(j){ //Convertir en droppable a 1 elemento
+function area(j,aele){ //Convertir en droppable a 1 elemento
       $('#'+j).droppable({
           accept : function(d){
             if (d.attr("id")==j-1 || d.attr("id")==j+1 || d.attr("id")==j-100 || d.attr("id")==j+100){
@@ -104,21 +105,49 @@ function area(j){ //Convertir en droppable a 1 elemento
             img2=$(this).attr("src");
             $(this).attr("src",img1);
             $('#'+identificador).attr("src",img2);
-            barrido();
+            barrido(aele);
           }
       });
 }
 
-function eliminar(n){
+function eliminarElementos(aele){
+  aele.forEach(eliminare);//Elimina los elementos del arreglo
+  aele = [];
+}
+
+function aparicion (){
+  var auxid = 0;
+  var auxid5 = 0;
+  for (var j=0;j<cont+1;j++){ // Muestra los elementos ocultos
+    auxid = ident+j;
+    auxid5 = auxid+7;
+    $('#'+auxid5).show();
+  }
+}
+
+function anexado (ident){
+  for (var n=0; n<cont+1; n++){ //Anexamiento de nuevos elementos
+    var col = (ident-10)/100;
+    var sel1 = randomico ();
+    var ide = ident+13-cont+n;
+    var ape = '<img src="image/'+sel1+'.png" class="elemento" id="'+ide+'">';
+    $('.col-'+col).prepend(ape);
+    $('#'+ide).hide();
+    selec();
+    console.log(ape);
+    condiciones();
+  }
+}
+
+function anex (item){
+
+}
+
+function eliminar(n,aele){
   var ident = 110+n*100;
   var ident2 = 0;
   var cont = 0;
-  var auxid = 0;
   var auxid2 = 0;
-  var auxid3 = 0;
-  var auxid4 = 0;
-  var auxid5 = 0;
-  var aele = [];
   for (var c=0;c<5;c++){ //Recorrido 4 primeros elementos columna
     //console.log("c="+c);
     cont = 0;
@@ -131,38 +160,47 @@ function eliminar(n){
           for (var j=0;j<cont+1;j++){//Insertar en el arreglo los elementos adjuntos iguales
             auxid2 = ident2+j;
             aele.push(auxid2);
-          }
-          aele.forEach(eliminare);//Elimina los elementos del arreglo
-          for (var j=0;j<cont+1;j++){ // Muestra los elementos ocultos
-            auxid = ident+j;
-            auxid5 = auxid+7;
-            $('#'+auxid5).show();
-          }
-          for (var k=0;k<14;k++){ //Reasignacion de ids
-            auxid3 = ident2+k-1;
-            auxid4 = auxid3+cont+1;
-            $('#'+auxid4).attr("id",auxid3);
-            //console.log(auxid4 +" -> "+ auxid3);
-          }
-          for (var n=0; n<cont+1; n++){ //Anexamiento de nuevos elementos
-            var col = (ident-10)/100;
-            var sel1 = randomico ();
-            var ide = ident+13-cont+n;
-            var ape = '<img src="image/'+sel1+'.png" class="elemento" id="'+ide+'">';
-            $('.col-'+col).prepend(ape);
-            $('#'+ide).hide();
-            selec();
-            console.log(ape);
-            condiciones();
+            //console.log("add "+auxid2);
           }
           c=c+cont;
         }
         //console.log(aele);
-        selec();
+        selec(aele);
+        break;
+      }//Fin else
+    }//Fin recorrido elementos columna
+  }//Fin recorrido 4 primeros elementos columna
+
+  ident = 110+n;
+
+  //Columnas
+  for (var c=0;c<600;c=c+100){ //Recorrido 4 primeros elementos fila
+    cont = 0;
+    ident2 = ident+c;
+    for (var i=ident2+100;i<800;i=i+100){ //Recorrido elementos columna
+      //console.log("Fijo "+ident2+" - comparado "+i);
+      if ($('#'+ident2).attr("src")==$('#'+i).attr("src")){ //comparacion de elementos iguales en columna
+        cont++;
+      }else {
+        if (cont>1){
+          for (var j=0;j<cont+1;j++){ //Remocion de elementos iguales
+            auxid = ident+j;
+            auxid2 = ident2+j*100;
+            //console.log("columna "+auxid2);
+            auxid5 = auxid2+7;
+            aele.push(auxid2);
+          }
+          c=c+cont*100;
+        }
+
+        selec(aele);
+        //console.log("break");
         break;
       }
     }//Fin recorrido elementos columna
+    //console.log(c);
   }//Fin recorrido 4 primeros elementos columna
+  //console.log(aele);
 }
 
 function rap(){
@@ -194,13 +232,29 @@ function gravity2(){
   //$('#16').attr("id",15);
 }
 
-function barrido(){ //Funcion comparacion de elementos iguales en malla
-  for (var n=0;n<8;n++){//Barido horizontal
-    eliminar(n);
+function barrido(aele){ //Funcion comparacion de elementos iguales en malla
+  for (var n=0;n<7;n++){//Barido horizontal
+    eliminar(n,aele);
   }
-  /*for (var n=0;n<8;n++){//Barido horizontal
-    eliminarF(n);
-  }*/
+  eliminarElementos(aele);
+}
+
+function efectoA (aele){
+  aele.forEach(function(){
+      $('#'+item).animate({
+        opacity: 0.1
+      },500,efectoB());
+  })
+}
+
+function efectoB (aele){
+  aele.forEach(function(){
+      $('#'+item).animate({
+        opacity: 0.1
+      },500,function(){
+
+      });
+  })
 }
 
 function eliminarF(n){
@@ -255,4 +309,24 @@ function eliminarF(n){
 function eliminare (item){
   $('#'+item).hide("fast");
   $('#'+item).remove();
+
+  var col=Math.floor(item/100)*100+17;
+  var col2=Math.floor(item/100);
+  var ide=Math.floor(item/100)*100+23;
+  $('#'+col).show();
+  var auxid4=0;
+  var auxid3=0;
+  for (var k=1;k<14;k++){ //Reasignacion de ids
+    auxid3 = item+k-1;
+    auxid4 = item+k;
+    $('#'+auxid4).attr("id",auxid3);
+    //console.log(auxid4 +" -> "+ auxid3);
+
+    var sel1 = randomico ();
+    var ape = '<img src="image/'+sel1+'.png" class="elemento" id="'+ide+'">';
+    $('.col-'+col2).prepend(ape);
+    $('#'+ide).hide();
+    selec();
+    condiciones();
+  }
 }
