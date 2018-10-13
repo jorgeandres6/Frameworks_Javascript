@@ -159,6 +159,7 @@ function eliminar(n,aele){
         if (cont>1){//Comparacion si hay mas de 3 elementos iguales
           for (var j=0;j<cont+1;j++){//Insertar en el arreglo los elementos adjuntos iguales
             auxid2 = ident2+j;
+            //console.log(aele);
             aele.push(auxid2);
             //console.log("add "+auxid2);
           }
@@ -237,6 +238,8 @@ function barrido(aele){ //Funcion comparacion de elementos iguales en malla
     eliminar(n,aele);
   }
   eliminarElementos(aele);
+  selec(aele);
+  condiciones();
 }
 
 function efectoA (aele){
@@ -313,7 +316,7 @@ function eliminare (item){
   var col=Math.floor(item/100)*100+17;
   var col2=Math.floor(item/100);
   var ide=Math.floor(item/100)*100+23;
-  $('#'+col).show();
+  $('#'+col).show("fast");
   var auxid4=0;
   var auxid3=0;
   for (var k=1;k<14;k++){ //Reasignacion de ids
@@ -325,8 +328,6 @@ function eliminare (item){
     var sel1 = randomico ();
     var ape = '<img src="image/'+sel1+'.png" class="elemento" id="'+ide+'">';
     $('.col-'+col2).prepend(ape);
-    $('#'+ide).hide();
-    selec();
-    condiciones();
+    $('#'+ide).hide("fast");
   }
 }
