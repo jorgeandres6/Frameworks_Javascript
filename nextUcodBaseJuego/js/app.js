@@ -110,9 +110,9 @@ function area(j,aele){ //Convertir en droppable a 1 elemento
       });
 }
 
-function eliminarElementos(aele){
-  aele.forEach(eliminare);//Elimina los elementos del arreglo
-  aele = [];
+function eliminarElementos(arreglo){
+  arreglo.forEach(eliminare);//Elimina los elementos del arreglo
+  arreglo.length = 0;
 }
 
 function aparicion (){
@@ -137,10 +137,6 @@ function anexado (ident){
     console.log(ape);
     condiciones();
   }
-}
-
-function anex (item){
-
 }
 
 function eliminar(n,aele){
@@ -234,12 +230,24 @@ function gravity2(){
 }
 
 function barrido(aele){ //Funcion comparacion de elementos iguales en malla
-  for (var n=0;n<7;n++){//Barido horizontal
-    eliminar(n,aele);
+  var aele2 = [];
+  while (true) {
+    for (var n=0;n<7;n++){//Barido elementos
+      eliminar(n,aele);
+    }
+    eliminarElementos(aele);
+    selec(aele);
+    condiciones();
+    for (var n=0;n<7;n++){//Barrido elementos
+      eliminar(n,aele2);
+    }
+    eliminarElementos(aele2);
+    selec(aele2);
+    condiciones();
+    if (aele2.length==0){
+      break;
+    }
   }
-  eliminarElementos(aele);
-  selec(aele);
-  condiciones();
 }
 
 function efectoA (aele){
