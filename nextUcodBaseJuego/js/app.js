@@ -7,6 +7,7 @@ $(function(){
   color1("h1");//Funcion para el color del titulo
   inicio();
   barrido(aele);
+  document.getElementById("movimientos-text").innerHTML=0;
   selec(aele);
   //barrido();
   /*$('.elemento').click(function(){
@@ -145,6 +146,7 @@ function eliminar(n,aele){
   var ident2 = 0;
   var cont = 0;
   var auxid2 = 0;
+  var puntaje = parseInt(document.getElementById("movimientos-text").innerHTML);
   for (var c=0;c<5;c++){ //Recorrido 4 primeros elementos columna
     //console.log("c="+c);
     cont = 0;
@@ -204,7 +206,9 @@ function eliminar(n,aele){
     }//Fin recorrido elementos columna
     //console.log(c);
   }//Fin recorrido 4 primeros elementos columna
-  //console.log(aele);
+  puntaje = puntaje+aele.length;
+  console.log("puntaje = "+puntaje);
+  document.getElementById("movimientos-text").innerHTML=puntaje;
 }
 
 function rap(){
@@ -327,7 +331,7 @@ function eliminarF(n){
 }
 
 function eliminare (item){
-  console.log(item);
+  //console.log(item);
   $('#'+item).hide("fast");
   $('#'+item).remove();
 
