@@ -6,11 +6,12 @@ $(function(){
   var aele = [];
   color1("h1");//Funcion para el color del titulo
   inicio();
+  barrido(aele);
   selec(aele);
   //barrido();
-  $('.elemento').click(function(){
+  /*$('.elemento').click(function(){
     console.log(this.id);
-  });
+  });*/
 })
 
 function color1 (elemento){ // Color del titulo 1
@@ -154,11 +155,13 @@ function eliminar(n,aele){
       }else {
         if (cont>1){//Comparacion si hay mas de 3 elementos iguales
           for (var j=0;j<cont+1;j++){//Insertar en el arreglo los elementos adjuntos iguales
-            auxid2 = ident2+j;
+            auxid2 = ident2;
             //console.log(aele);
             aele.push(auxid2);
+            //console.log(aele)
             //console.log("add "+auxid2);
           }
+          //console.log("FIN");
           c=c+cont;
         }
         //console.log(aele);
@@ -174,18 +177,22 @@ function eliminar(n,aele){
   for (var c=0;c<600;c=c+100){ //Recorrido 4 primeros elementos fila
     cont = 0;
     ident2 = ident+c;
-    for (var i=ident2+100;i<800;i=i+100){ //Recorrido elementos columna
+    for (var i=ident2+100;i<900;i=i+100){ //Recorrido elementos columna
       //console.log("Fijo "+ident2+" - comparado "+i);
       if ($('#'+ident2).attr("src")==$('#'+i).attr("src")){ //comparacion de elementos iguales en columna
         cont++;
+        //console.log("cont="+cont);
       }else {
         if (cont>1){
+          //console.log("Si");
           for (var j=0;j<cont+1;j++){ //Remocion de elementos iguales
             auxid = ident+j;
             auxid2 = ident2+j*100;
             //console.log("columna "+auxid2);
             auxid5 = auxid2+7;
-            aele.push(auxid2);
+            comparar(aele,auxid2);
+            //aele.push(auxid2);
+            //console.log(aele);
           }
           c=c+cont*100;
         }
@@ -232,7 +239,7 @@ function gravity2(){
 function barrido(aele){ //Funcion comparacion de elementos iguales en malla
   var aele2 = [];
   while (true) {
-    for (var n=0;n<7;n++){//Barido elementos
+    for (var n=0;n<7;n++){//Barrido elementos
       eliminar(n,aele);
     }
     eliminarElementos(aele);
@@ -241,12 +248,13 @@ function barrido(aele){ //Funcion comparacion de elementos iguales en malla
     for (var n=0;n<7;n++){//Barrido elementos
       eliminar(n,aele2);
     }
-    eliminarElementos(aele2);
+    /*eliminarElementos(aele2);
     selec(aele2);
-    condiciones();
+    condiciones();*/
     if (aele2.length==0){
       break;
     }
+    aele2.length=0;
   }
 }
 
@@ -286,12 +294,13 @@ function eliminarF(n){
       }else {
         if (cont>1){
           for (var j=0;j<cont+1;j++){ //Remocion de elementos iguales
-            auxid = ident+j;
+            //auxid = ident+j;
             auxid2 = ident2+j*100;
-            auxid5 = auxid2+7;
-            $('#'+auxid2).hide("fast");
-            $('#'+auxid2).remove();
-            $('#'+auxid5).show();
+            //auxid5 = auxid2+7;
+
+            //$('#'+auxid2).hide("fast");
+            //$('#'+auxid2).remove();
+            //$('#'+auxid5).show();
             //console.log("hide "+auxid2);
             //console.log("show "+auxid5);
           }
@@ -318,6 +327,7 @@ function eliminarF(n){
 }
 
 function eliminare (item){
+  console.log(item);
   $('#'+item).hide("fast");
   $('#'+item).remove();
 
@@ -337,5 +347,17 @@ function eliminare (item){
     var ape = '<img src="image/'+sel1+'.png" class="elemento" id="'+ide+'">';
     $('.col-'+col2).prepend(ape);
     $('#'+ide).hide("fast");
+  }
+}
+
+function comparar (aele, item){
+  var cont = 0;
+  for (var i=0;i < aele.length; i++){
+    if (item == aele[i]){
+      cont++;
+    }
+  }
+  if (cont == 0){
+    aele.push(item);
   }
 }
