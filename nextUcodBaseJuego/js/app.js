@@ -4,10 +4,11 @@ $(function(){
   var img2;
   var identificador;
   var aele = [];
+  var i = 0;
   color1("h1");//Funcion para el color del titulo
   inicio();
   barrido(aele);
-  document.getElementById("movimientos-text").innerHTML=0;
+  document.getElementById("score-text").innerHTML=0;
   selec(aele);
   //barrido();
   /*$('.elemento').click(function(){
@@ -96,6 +97,12 @@ function selec(aele){ //Barrido de los elementos para hacerlos droppable
   }
 }
 
+function conteo (){
+  var mov = parseInt(document.getElementById("movimientos-text").innerHTML);
+  mov++;
+  document.getElementById("movimientos-text").innerHTML=mov;
+}
+
 function area(j,aele){ //Convertir en droppable a 1 elemento
       $('#'+j).droppable({
           accept : function(d){
@@ -107,6 +114,7 @@ function area(j,aele){ //Convertir en droppable a 1 elemento
             img2=$(this).attr("src");
             $(this).attr("src",img1);
             $('#'+identificador).attr("src",img2);
+            conteo();
             barrido(aele);
           }
       });
@@ -146,7 +154,7 @@ function eliminar(n,aele){
   var ident2 = 0;
   var cont = 0;
   var auxid2 = 0;
-  var puntaje = parseInt(document.getElementById("movimientos-text").innerHTML);
+  var puntaje = parseInt(document.getElementById("score-text").innerHTML);
   for (var c=0;c<5;c++){ //Recorrido 4 primeros elementos columna
     //console.log("c="+c);
     cont = 0;
@@ -207,8 +215,8 @@ function eliminar(n,aele){
     //console.log(c);
   }//Fin recorrido 4 primeros elementos columna
   puntaje = puntaje+aele.length;
-  console.log("puntaje = "+puntaje);
-  document.getElementById("movimientos-text").innerHTML=puntaje;
+  //console.log("puntaje = "+puntaje);
+  document.getElementById("score-text").innerHTML=puntaje;
 }
 
 function rap(){
@@ -262,22 +270,39 @@ function barrido(aele){ //Funcion comparacion de elementos iguales en malla
   }
 }
 
-function efectoA (aele){
-  aele.forEach(function(){
-      $('#'+item).animate({
-        opacity: 0.1
-      },500,efectoB());
-  })
+function efectoA (item){
+  console.log("A");
+  $('#'+item).animate({
+    opacity: 0.1
+  },1000);
 }
 
-function efectoB (aele){
-  aele.forEach(function(){
-      $('#'+item).animate({
-        opacity: 0.1
-      },500,function(){
+function efectoB (item){
+  console.log("B");
+  $('#'+item).animate({
+    opacity: 1
+  },1000);
+}
 
-      });
-  })
+function coordinador (aele){
+  if (typeof coordinador.cont == 'undefined'){
+    coordinador.cont = 0;
+  }
+  coordinador.cont++;
+    if (coordinador.cont<4){
+      if (coordinador.cont%2 == 0){
+        aele.forEach(efectoA);
+      }
+      else {
+        aele.forEach(efectoB);
+      }
+    }
+    else {
+      eliminarElementos(aele);
+      selec(aele);
+      condiciones();
+      coordinador.cont = 0;
+    }
 }
 
 function eliminarF(n){
@@ -364,4 +389,8 @@ function comparar (aele, item){
   if (cont == 0){
     aele.push(item);
   }
+}
+
+function auxiliar (n){
+  return n;
 }
