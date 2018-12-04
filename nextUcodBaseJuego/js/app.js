@@ -6,10 +6,25 @@ $(function(){
   var aele = [];
   var i = 0;
   color1("h1");//Funcion para el color del titulo
-  inicio();
-  barrido(aele);
-  document.getElementById("score-text").innerHTML=0;
-  selec(aele);
+  var tiempo = new Timer();
+  $(".btn-reinicio").click(function(){
+    tiempo.stop();
+    limpiar();
+    inicio();
+    barrido(aele);
+    document.getElementById("score-text").innerHTML=0;
+    document.getElementById("movimientos-text").innerHTML=0;
+    selec(aele);
+    document.getElementsByClassName("btn-reinicio")[0].innerHTML="Reiniciar";
+    tiempo.start({countdown: true, startValues: {minutes: 2}});
+  });
+$('#timer').html(tiempo.getTimeValues().toString());
+tiempo.addEventListener('secondsUpdated', function (e) {
+  $('#timer').html(tiempo.getTimeValues().toString());
+});
+tiempo.addEventListener('targetAchieved', function (e) {
+
+});
   //barrido();
   /*$('.elemento').click(function(){
     console.log(this.id);
@@ -30,6 +45,16 @@ function color2 (elemento){ // Color del titulo 2
     },10,function() {
       color1(elemento);
     })
+}
+
+function limpiar (){
+  for (var j=1; j<8; j++){
+    for (var i = 10; i < 24; i++) {
+      var m=(j*100)+i;
+      $("#"+m).hide();
+      $("#"+m).remove();
+    }
+  }
 }
 
 function inicio (){
