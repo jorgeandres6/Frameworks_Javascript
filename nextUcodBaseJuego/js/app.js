@@ -17,7 +17,7 @@ $(function(){
     document.getElementById("movimientos-text").innerHTML=0;
     selec(aele);
     document.getElementsByClassName("btn-reinicio")[0].innerHTML="Reiniciar";
-    tiempo.start({countdown: true, startValues: {minutes: 1}});
+    tiempo.start({countdown: true, startValues: {minutes: 2}});
   });
 $('#timer').html(tiempo.getTimeValues().toString());
 tiempo.addEventListener('secondsUpdated', function (e) {
