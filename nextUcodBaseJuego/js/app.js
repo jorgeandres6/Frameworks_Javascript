@@ -9,6 +9,7 @@ $(function(){
   var tiempo = new Timer();
   $(".btn-reinicio").click(function(){
     tiempo.stop();
+    reinicio();
     limpiar();
     inicio();
     barrido(aele);
@@ -16,20 +17,44 @@ $(function(){
     document.getElementById("movimientos-text").innerHTML=0;
     selec(aele);
     document.getElementsByClassName("btn-reinicio")[0].innerHTML="Reiniciar";
-    tiempo.start({countdown: true, startValues: {minutes: 2}});
+    tiempo.start({countdown: true, startValues: {minutes: 1}});
   });
 $('#timer').html(tiempo.getTimeValues().toString());
 tiempo.addEventListener('secondsUpdated', function (e) {
   $('#timer').html(tiempo.getTimeValues().toString());
 });
 tiempo.addEventListener('targetAchieved', function (e) {
-
+  fin();
 });
   //barrido();
   /*$('.elemento').click(function(){
     console.log(this.id);
   });*/
 })
+
+function fin (){ //Animacion final
+  $('.panel-tablero').animate({
+    width:"0px",
+    height:"0px"
+  },500,function(){
+      $('.panel-tablero').hide();
+      $('.panel-score').animate({
+        width:"100%"
+      });
+  });
+}
+
+function reinicio (){ //Animacion de posicionamiento inicial
+  $('.panel-score').animate({
+    width:"25%"
+  },500,function(){
+      $('.panel-tablero').show();
+      $('.panel-tablero').animate({
+        width: "70%",
+        height: "700px"
+      });
+  });
+}
 
 function color1 (elemento){ // Color del titulo 1
     $(elemento).delay(500).animate({
@@ -47,7 +72,7 @@ function color2 (elemento){ // Color del titulo 2
     })
 }
 
-function limpiar (){
+function limpiar (){ //Limpia el tablero de antiguos elementos
   for (var j=1; j<8; j++){
     for (var i = 10; i < 24; i++) {
       var m=(j*100)+i;
@@ -57,7 +82,7 @@ function limpiar (){
   }
 }
 
-function inicio (){
+function inicio (){//Colocacion de elementos en el tablero e inicio del juego
   for (var i=10; i<24; i++){
     var sel = randomico ();
     $(".col-1").prepend('<img src="image/'+sel+'.png" class="elemento" id="1'+i+'">');
@@ -83,7 +108,7 @@ function inicio (){
   condiciones();
 }
 
-function randomico (){
+function randomico (){//Creacion de elementos aleatoriamente
   var num = Math.random()*10;
   var sel = "";
   if(num<3){
@@ -98,7 +123,7 @@ function randomico (){
   return sel;
 }
 
-function condiciones (){
+function condiciones (){//Condiciones para elementos drag&drop
   var bound;
   wig = $('.elemento').draggable({
     containment: ".panel-tablero",
@@ -122,7 +147,7 @@ function selec(aele){ //Barrido de los elementos para hacerlos droppable
   }
 }
 
-function conteo (){
+function conteo (){//Conteo de movimientos
   var mov = parseInt(document.getElementById("movimientos-text").innerHTML);
   mov++;
   document.getElementById("movimientos-text").innerHTML=mov;
@@ -145,12 +170,12 @@ function area(j,aele){ //Convertir en droppable a 1 elemento
       });
 }
 
-function eliminarElementos(arreglo){
+function eliminarElementos(arreglo){//Eliminar elementos del tablero
   arreglo.forEach(eliminare);//Elimina los elementos del arreglo
   arreglo.length = 0;
 }
 
-function aparicion (){
+function aparicion (){//Mostrar los elementos ocultos
   var auxid = 0;
   var auxid5 = 0;
   for (var j=0;j<cont+1;j++){ // Muestra los elementos ocultos
@@ -160,7 +185,7 @@ function aparicion (){
   }
 }
 
-function anexado (ident){
+function anexado (ident){//Anexar nuevos elementos
   for (var n=0; n<cont+1; n++){ //Anexamiento de nuevos elementos
     var col = (ident-10)/100;
     var sel1 = randomico ();
@@ -174,7 +199,7 @@ function anexado (ident){
   }
 }
 
-function eliminar(n,aele){
+function eliminar(n,aele){//Coloca los elementos a eliminarse en un arreglo
   var ident = 110+n*100;
   var ident2 = 0;
   var cont = 0;
@@ -244,35 +269,6 @@ function eliminar(n,aele){
   document.getElementById("score-text").innerHTML=puntaje;
 }
 
-function rap(){
-  for (var k=0;k<cont+1;k++){
-    auxid3 = ident+k;
-    $('#'+auxid3).show("fast");
-    console.log(auxid3);
-    //$('#'+auxid).attr("src",$('#'+auxid2).attr("src"));
-  }
-}
-
-function gravity(){
-  $('#14').hide("slow",function(){
-    var imagen = $('#15').attr("src");
-    $('#14').attr("src",imagen);
-    $('#14').show();
-  });
-}
-
-function gravity2(){
-  var pos = $('#15').position();
-  $('#15').animate(
-    {
-      top: "+=100"
-    },500, function (){
-      $('#14').hide();
-    }
-  );
-  //$('#16').attr("id",15);
-}
-
 function barrido(aele){ //Funcion comparacion de elementos iguales en malla
   var aele2 = [];
   while (true) {
@@ -295,21 +291,21 @@ function barrido(aele){ //Funcion comparacion de elementos iguales en malla
   }
 }
 
-function efectoA (item){
+function efectoA (item){//Efecto parpadeo A
   console.log("A");
   $('#'+item).animate({
     opacity: 0.1
   },1000);
 }
 
-function efectoB (item){
+function efectoB (item){//Efecto de parpadeo B
   console.log("B");
   $('#'+item).animate({
     opacity: 1
   },1000);
 }
 
-function coordinador (aele){
+function coordinador (aele){//Coordinador efecto de parpadeo
   if (typeof coordinador.cont == 'undefined'){
     coordinador.cont = 0;
   }
@@ -330,57 +326,7 @@ function coordinador (aele){
     }
 }
 
-function eliminarF(n){
-  var ident = 110+n;
-  var ident2 = 0;
-  var cont = 0;
-  var auxid = 0;
-  var auxid2 = 0;
-  var auxid3 = 0;
-  var auxid4 = 0;
-
-  for (var c=0;c<400;c=c+100){ //Recorrido 4 primeros elementos fila
-    cont = 0;
-    ident2 = ident+c;
-    for (var i=ident2+100;i<800;i=i+100){ //Recorrido elementos columna
-      if ($('#'+ident2).attr("src")==$('#'+i).attr("src")){ //comparacion de elementos iguales en columna
-        cont++;
-      }else {
-        if (cont>1){
-          for (var j=0;j<cont+1;j++){ //Remocion de elementos iguales
-            //auxid = ident+j;
-            auxid2 = ident2+j*100;
-            //auxid5 = auxid2+7;
-
-            //$('#'+auxid2).hide("fast");
-            //$('#'+auxid2).remove();
-            //$('#'+auxid5).show();
-            //console.log("hide "+auxid2);
-            //console.log("show "+auxid5);
-          }
-          for (var m=0; m<cont+1; m++){
-            for (var k=0;k<14;k++){//Reasignacion de ids
-              auxid3 = ident2+k+m*100;
-              auxid4 = auxid3+1;
-              $('#'+auxid4).attr("id",auxid3);
-              console.log(auxid4 +" -> "+ auxid3);
-            }
-          }
-          var col = Math.floor(ident/100);
-          var sel1 = randomico ();
-          var ide = (col*100)+24;
-          $('.col-'+col).prepend('<img src="image/'+sel1+'.png" class="elemento" id="'+ide+'">');
-          $('#'+ide).hide();
-          //console.log("col "+ide);
-        }
-        selec();
-        break;
-      }
-    }//Fin recorrido elementos columna
-  }//Fin recorrido 4 primeros elementos columna
-}
-
-function eliminare (item){
+function eliminare (item){//Elimina los elementos del array de eliminacion
   //console.log(item);
   $('#'+item).hide("fast");
   $('#'+item).remove();
@@ -404,7 +350,7 @@ function eliminare (item){
   }
 }
 
-function comparar (aele, item){
+function comparar (aele, item){//Comparacion de elementos
   var cont = 0;
   for (var i=0;i < aele.length; i++){
     if (item == aele[i]){
@@ -414,8 +360,4 @@ function comparar (aele, item){
   if (cont == 0){
     aele.push(item);
   }
-}
-
-function auxiliar (n){
-  return n;
 }
